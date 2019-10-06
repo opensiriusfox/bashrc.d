@@ -1,0 +1,13 @@
+#!/bin/bash
+# These lines are to be appended to the default Ubuntu bashrc script
+# the only line I add to modify this file Add this file to the end of your
+# .bashrc to get whatever the defaults are there, then this scrilt will
+# scrape your .bashrc.d directory for *.sh files and load them into your
+# enviornment.
+if [[ -e ${HOME}/.bashrc.d ]]; then
+	for __import_file in "${HOME}/.bashrc.d/"*".sh"; do
+		source $__import_file
+	done
+	unset __import_file
+fi
+
