@@ -2,12 +2,6 @@
 #####################################################################
 # If we have a path element, strip it then add it in the new location
 #####################################################################
-function testDirPathStripAdd() {
-	if [ -d "$1" ]; then
-		pathStripAdd "$1"
-	fi
-}
-
 function pathStripAdd() {
 	pathStrip "$1"
 	if [[ "$2" == "front" ]]; then
@@ -79,39 +73,40 @@ fi
 
 # Load information that is in any extra random installed directory.
 __LOAD_DIRS=(/opt/mate /opt/makemkv /opt/ffmpeg $HOME/.gem/ruby/2.5.0 /opt/icestorm)
-for DIR_EXPAND in ${__LOAD_DIRS[*]}
-do
+for DIR_EXPAND in ${__LOAD_DIRS[*]}; do
 	loadDirectory $DIR_EXPAND
 done
 unset DIR_EXPAND __LOAD_DIRS
 
-echo $PKG_CONFIG_PATH
-echo $LD_RUN_PATH
-echo $LD_LIBRARY_PATH
-# CLEAN these variables
-__VAR_PTR_LST=(PKG_CONFIG_PATH LD_RUN_PATH LD_LIBRARY_PATH)
-for __VAR_PTR in ${__VAR_PTR_LST[*]}
-do
-	# get the value in the pointer
-	eval __VAR_VAL=\$$__VAR_PTR
-	if [ ${#__VAR_VAL} -gt 0 ]; then
-		# Strip ending : or leading : if exists.
-		if [ ${__VAR_VAL: -1} == ":" ]; then
-			__VAR_VAL=${__VAR_VAL:0:-1}
-		fi
-		if [ ${__VAR_VAL:0:1} == ":" ]; then
-			__VAR_VAL=${__VAR_VAL:1}
-		fi
-		while [[ $__VAR_VAL == *"::"* ]]; do
-			__VAR_VAL=${__VAR_VAL/::/:}
-		done
-		while [[ $__VAR_VAL == *"/:"* ]]; do
-			__VAR_VAL=${__VAR_VAL/\/:/:}
-		done
-		# save the cleaned result
-		eval $__VAR_PTR=$__VAR_VAL
-		#echo $__VAR_PTR "=" $__VAR_VAL
-	fi
-done
-unset __VAR_PTR_LST __VAR_PTR __VAR_VAL
-
+## This block was a legacy bit from when I spent so much time screwing around 
+# with Macports and had really janky enviornment varables. I don't need this
+# anymore because the loader is now mature enough to not randomly throw garbage
+# into the enviornment variables. This code is left simply for legacy purposes
+# as an example of what you end up writing if you really have no idea what your
+# doing (also known as learning!).
+## CLEAN these variables
+#__VAR_PTR_LST=(PKG_CONFIG_PATH LD_RUN_PATH LD_LIBRARY_PATH)
+#for __VAR_PTR in ${__VAR_PTR_LST[*]}
+#do
+#	# get the value in the pointer
+#	eval __VAR_VAL=\$$__VAR_PTR
+#	if [ ${#__VAR_VAL} -gt 0 ]; then
+#		# Strip ending : or leading : if exists.
+#		if [ ${__VAR_VAL: -1} == ":" ]; then
+#			__VAR_VAL=${__VAR_VAL:0:-1}
+#		fi
+#		if [ ${__VAR_VAL:0:1} == ":" ]; then
+#			__VAR_VAL=${__VAR_VAL:1}
+#		fi
+#		while [[ $__VAR_VAL == *"::"* ]]; do
+#			__VAR_VAL=${__VAR_VAL/::/:}
+#		done
+#		while [[ $__VAR_VAL == *"/:"* ]]; do
+#			__VAR_VAL=${__VAR_VAL/\/:/:}
+#		done
+#		# save the cleaned result
+#		eval $__VAR_PTR=$__VAR_VAL
+#		#echo $__VAR_PTR "=" $__VAR_VAL
+#	fi
+#done
+#unset __VAR_PTR_LST __VAR_PTR __VAR_VAL
