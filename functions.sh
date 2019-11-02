@@ -103,7 +103,7 @@ treep() { # short for tree pager
 
 ts() {
 	( # so we don't get stuck in that folder
-	cd "$HOME/Dropbox/Grad School/Writing/0000-dissertation"
+	cd "$HOME/Documents/GradSchool/Writing/0000-dissertation"
 	grep -R "$1" *
 	)
 }
