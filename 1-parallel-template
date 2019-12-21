@@ -1,0 +1,20 @@
+#!/bin/bash
+
+MAX_JOBS=8
+function holdForWork() {
+	while [[ $MAX_JOBS -le $(jobs -l | wc -l) ]]; do sleep 0.1; done
+}
+function holdForFinish() {
+	while [[ $(jobs -lr | wc -l) -gt 0 ]]; do sleep 0.1; done
+}
+
+
+for TASK in TASK_LIST; do
+	holdForWork
+	(
+		echo ""
+	) &>/dev/null &
+done
+
+holdForFinish
+echo "    ...done!"

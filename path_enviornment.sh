@@ -72,7 +72,7 @@ if [ -d "$HOME/.local" ] ; then
 fi
 
 # Load information that is in any extra random installed directory.
-__LOAD_DIRS=(/opt/mate /opt/makemkv /opt/ffmpeg $HOME/.gem/ruby/2.5.0 /opt/icestorm)
+__LOAD_DIRS=(/opt/fpga /opt/makemkv /opt/icestorm)
 for DIR_EXPAND in ${__LOAD_DIRS[*]}; do
 	loadDirectory $DIR_EXPAND
 done
