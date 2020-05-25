@@ -18,27 +18,28 @@ function __currentDirTest() {
 	fi
 }
 
-function __smbGVFSReplace() {
-	local prefix_testing='/run/user/'$(id -u)'/gvfs/smb-share:server='
-	local gvfs_pfx='/run/user/'$(id -u)'/gvfs'
-	if [[ $(__currentDirTest "$HOME") -eq 1 ]]; then
-		echo $(__replacePathStr "$HOME" '\~')
-	elif [[ $(__currentDirTest $gvfs_pfx'/smb-share:server=') -eq 1 ]]; then
-		local smb_match='smb-share:server=\([^,]*\),share=\([^/,]\+\)'
-		if [[ $(__currentDirTest $gvfs_pfx'/smb-share:server=' ',user=') -eq 1 ]]; then
-			echo $(__replacePathStr $gvfs_pfx'/'$smb_match',user=\([^,/]*\)\([^/]*\)' 'gvfs:\1=>\3@\2')
-		else
-			echo $(__replacePathStr $gvfs_pfx'/'$smb_match 'gvfs:\1=>\2')
-		fi
-	else
-		echo $PWD
-	fi
-}
+## Sorry, KDE user now. gvfs doesn't exist.
+#function __smbGVFSReplace() {
+#	local prefix_testing='/run/user/'$(id -u)'/gvfs/smb-share:server='
+#	local gvfs_pfx='/run/user/'$(id -u)'/gvfs'
+#	if [[ $(__currentDirTest "$HOME") -eq 1 ]]; then
+#		echo $(__replacePathStr "$HOME" '\~')
+#	elif [[ $(__currentDirTest $gvfs_pfx'/smb-share:server=') -eq 1 ]]; then
+#		local smb_match='smb-share:server=\([^,]*\),share=\([^/,]\+\)'
+#		if [[ $(__currentDirTest $gvfs_pfx'/smb-share:server=' ',user=') -eq 1 ]]; then
+#			echo $(__replacePathStr $gvfs_pfx'/'$smb_match',user=\([^,/]*\)\([^/]*\)' 'gvfs:\1=>\3@\2')
+#		else
+#			echo $(__replacePathStr $gvfs_pfx'/'$smb_match 'gvfs:\1=>\2')
+#		fi
+#	else
+#		echo $PWD
+#	fi
+#}
 
 function __replacePathStr() {
 	__SEARCH=$(echo "$1" | sed 's_/_\\/_g')
 	__REPLACE=$(echo "$2" | sed 's_/_\\/_g')
-	echo $PWD | sed "s/${__SEARCH}/${__REPLACE}/g"
+	echo $PWD | sed "s/${__SEARCH}/${__REPLACE}/"
 }
 
 
@@ -70,8 +71,8 @@ else
 	alt_hostname="\h"
 fi
 
-# Flip this flag to disable samba path substition.
-if [[ 1 -eq 0 ]]; then
+# Flip this flag to disable samba path substitution.
+if [[ 1 -eq 1 ]]; then
 	export PS1="\[\e[01;32m\]\u\[\e[00m\]@\[\e[01;32m\]${alt_hostname}"
 	export PS1+="\[\e[01;34m\] \w \\$\[\e[00m\] "
 else
