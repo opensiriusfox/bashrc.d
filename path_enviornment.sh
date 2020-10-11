@@ -61,7 +61,7 @@ function loadDirectory() {
 
 ###########
 # Load information that is in any extra random installed directory.
-__LOAD_DIRS=(/opt/fpga /opt/makemkv /opt/icestorm /opt/gemini $HOME/.gem/ruby/2.7.0)
+__LOAD_DIRS=(/opt/fpga-opentoolforge/current /opt/fpga /opt/makemkv /opt/icestorm /opt/gemini $HOME/.gem/ruby/2.7.0)
 for DIR_EXPAND in ${__LOAD_DIRS[*]}; do
 	loadDirectory $DIR_EXPAND
 done
