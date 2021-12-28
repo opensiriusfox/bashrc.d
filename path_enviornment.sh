@@ -61,15 +61,22 @@ function loadDirectory() {
 
 ###########
 # Load information that is in any extra random installed directory.
-__LOAD_DIRS=(/opt/fpga-opentoolforge/current /opt/fpga /opt/makemkv /opt/icestorm /opt/gemini $HOME/.gem/ruby/2.7.0)
-for DIR_EXPAND in ${__LOAD_DIRS[*]}; do
+__LOAD_DIRS=(
+	/opt/poke
+	/opt/fpga
+	/opt/makemkv
+	/opt/icestorm
+	/opt/gemini
+	$HOME/.gem/ruby/2.7.0
+)
+for DIR_EXPAND in ${__LOAD_DIRS[@]}; do
 	loadDirectory $DIR_EXPAND
 done
 unset DIR_EXPAND __LOAD_DIRS
 
 # set PATH so it includes user's private bin if it exists
 __LOAD_PATHS=("$HOME/.cargo/bin" "$HOME/bin" "$HOME/.bin" )
-for DIR_EXPAND in ${__LOAD_PATHS[*]}; do
+for DIR_EXPAND in ${__LOAD_PATHS[@]}; do
 	pathStripAdd "$DIR_EXPAND" front
 done
 unset DIR_EXPAND __LOAD_PATHS
