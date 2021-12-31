@@ -24,9 +24,9 @@ HOST_SPECIFIC_SRC="$BASHRC_D/hostname/$(hostname).sh"
 if [[ -e $HOST_SPECIFIC_SRC ]]; then
 	echo "Adding host specific file $HOST_SPECIFIC_SRC"
 	echo "##################" >> $COMPILED_SRC
-	echo "# $(basename $F)" >> $COMPILED_SRC
+	echo "# $(basename $HOST_SPECIFIC_SRC)" >> $COMPILED_SRC
 	echo "##################" >> $COMPILED_SRC
-	cat $F >> $COMPILED_SRC
+	cat $HOST_SPECIFIC_SRC >> $COMPILED_SRC
 	echo "" >> $COMPILED_SRC
 else
 	echo "No host specific file found at $HOST_SPECIFIC_SRC"
