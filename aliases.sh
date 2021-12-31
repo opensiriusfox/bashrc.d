@@ -27,6 +27,9 @@ alias fdiff="sdiff -t --tabsize=4 -w \$(tput cols) -b"
 alias rsync-prog="rsync -Pav"
 alias parallel="parallel --no-notice"
 
+export IDF_TOOLS_PATH=/opt/esp
+alias get_idf=". ${IDF_TOOLS_PATH}/esp-idf/export.sh"
+
 if [[ -e /opt/eagle/eagle/eagle ]]; then
 	alias eagle=$(readlink -f /opt/eagle/eagle/eagle)
 fi

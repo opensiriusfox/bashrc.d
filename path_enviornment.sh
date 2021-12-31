@@ -28,6 +28,13 @@ function pathStrip() {
 #####################################################################
 # A function to load enviornment variables 
 #####################################################################
+function loadBinDir() {
+	DIR_EXPAND=$(readlink -f "$1")
+	if [ -d "$DIR_EXPAND"]; then
+		pathSTripAdd "$DIR_EXPAND/bin" "$2"
+	fi
+}
+
 function loadDirectory() {
 	DIR_EXPAND=$(readlink -f "$1")
 	if [ -d "$DIR_EXPAND" ] ; then
@@ -49,18 +56,30 @@ function loadDirectory() {
 			export ACLOCAL_FLAGS="-I $DIR_EXPAND/share/aclocal $ACLOCAL_FLAGS"
 		fi
 	fi
-
 }
 
 
 ###########
+# Load information that is in any extra random installed directory.
+__LOAD_DIRS=(
+	/opt/poke
+	/opt/fpga
+	/opt/makemkv
+	/opt/icestorm
+	/opt/gemini
+	$HOME/.gem/ruby/2.7.0
+)
+for DIR_EXPAND in ${__LOAD_DIRS[@]}; do
+	loadDirectory $DIR_EXPAND
+done
+unset DIR_EXPAND __LOAD_DIRS
+
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-	pathStripAdd "$HOME/bin" front
-fi
-if [ -d "$HOME/.bin" ] ; then
-	pathStripAdd "$HOME/.bin" front
-fi
+__LOAD_PATHS=("$HOME/.cargo/bin" "$HOME/bin" "$HOME/.bin" )
+for DIR_EXPAND in ${__LOAD_PATHS[@]}; do
+	pathStripAdd "$DIR_EXPAND" front
+done
+unset DIR_EXPAND __LOAD_PATHS
 
 # And load the local directory
 if [ -d "$HOME/.local" ] ; then
@@ -70,43 +89,3 @@ if [ -d "$HOME/.local" ] ; then
 		export XDG_DATA_HOME="$HOME/.local/share"
 	fi
 fi
-
-# Load information that is in any extra random installed directory.
-__LOAD_DIRS=(/opt/fpga /opt/makemkv /opt/icestorm)
-for DIR_EXPAND in ${__LOAD_DIRS[*]}; do
-	loadDirectory $DIR_EXPAND
-done
-unset DIR_EXPAND __LOAD_DIRS
-
-## This block was a legacy bit from when I spent so much time screwing around 
-# with Macports and had really janky enviornment varables. I don't need this
-# anymore because the loader is now mature enough to not randomly throw garbage
-# into the enviornment variables. This code is left simply for legacy purposes
-# as an example of what you end up writing if you really have no idea what your
-# doing (also known as learning!).
-## CLEAN these variables
-#__VAR_PTR_LST=(PKG_CONFIG_PATH LD_RUN_PATH LD_LIBRARY_PATH)
-#for __VAR_PTR in ${__VAR_PTR_LST[*]}
-#do
-#	# get the value in the pointer
-#	eval __VAR_VAL=\$$__VAR_PTR
-#	if [ ${#__VAR_VAL} -gt 0 ]; then
-#		# Strip ending : or leading : if exists.
-#		if [ ${__VAR_VAL: -1} == ":" ]; then
-#			__VAR_VAL=${__VAR_VAL:0:-1}
-#		fi
-#		if [ ${__VAR_VAL:0:1} == ":" ]; then
-#			__VAR_VAL=${__VAR_VAL:1}
-#		fi
-#		while [[ $__VAR_VAL == *"::"* ]]; do
-#			__VAR_VAL=${__VAR_VAL/::/:}
-#		done
-#		while [[ $__VAR_VAL == *"/:"* ]]; do
-#			__VAR_VAL=${__VAR_VAL/\/:/:}
-#		done
-#		# save the cleaned result
-#		eval $__VAR_PTR=$__VAR_VAL
-#		#echo $__VAR_PTR "=" $__VAR_VAL
-#	fi
-#done
-#unset __VAR_PTR_LST __VAR_PTR __VAR_VAL

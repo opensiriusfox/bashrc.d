@@ -1,0 +1,42 @@
+#!/bin/bash
+export IFS=$'\n'
+
+BASHRC_D="$HOME/.bashrc.d"
+COMPILED_SRC="$BASHRC_D/1-compiled"
+echo "Rebuilding $COMPILED_SRC"
+
+echo """#!/bin/bash
+# COMPILED AUTOMAGICALLY AT """$(date -I)"""
+
+""" > $COMPILED_SRC
+
+SELF_SRC=$(readlink -f $0)
+for F in $(find $BASHRC_D -maxdepth 1 -iname "*.sh"); do
+	echo "  Building in $F"
+	echo "##################" >> $COMPILED_SRC
+	echo "# $(basename $F)" >> $COMPILED_SRC
+	echo "##################" >> $COMPILED_SRC
+	cat $F >> $COMPILED_SRC
+	echo "" >> $COMPILED_SRC
+done
+
+HOST_SPECIFIC_SRC="$BASHRC_D/hostname/$(hostname).sh"
+if [[ -e $HOST_SPECIFIC_SRC ]]; then
+	echo "Adding host specific file $HOST_SPECIFIC_SRC"
+	echo "##################" >> $COMPILED_SRC
+	echo "# $(basename $HOST_SPECIFIC_SRC)" >> $COMPILED_SRC
+	echo "##################" >> $COMPILED_SRC
+	cat $HOST_SPECIFIC_SRC >> $COMPILED_SRC
+	echo "" >> $COMPILED_SRC
+else
+	echo "No host specific file found at $HOST_SPECIFIC_SRC"
+fi
+
+echo "##################" >> $COMPILED_SRC
+echo "# Reloader Script" >> $COMPILED_SRC
+echo """##################
+function __rebuild_bashrcd() {
+	bash """$SELF_SRC"""
+}
+""" >> $COMPILED_SRC
+
