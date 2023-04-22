@@ -101,9 +101,16 @@ treep() { # short for tree pager
 	fi
 }
 
-ts() {
-	( # so we don't get stuck in that folder
-	cd "$HOME/Documents/GradSchool/Writing/0000-dissertation"
-	grep -R "$1" *
-	)
+function rv() {
+	RV=$?
+	if [[ $RV -eq 0 ]]; then
+		COLOR='2'
+	elif [[ $RV -eq 1 ]]; then
+		COLOR='3'
+	else
+		COLOR='1'
+	fi
+	printf '\e[4%dm' $COLOR
+	printf ' RV=%d \e[0m\n' $RV >&2
 }
+
