@@ -95,9 +95,7 @@ unset pathStripAdd pathStrip loadDirectory
 ###########
 # If rust is a thing, load it
 if [[ -d "$HOME/.cargo" ]]; then
-	[[ -x "$HOME/.cargo/env" ]] && (
-		echo "sourcing..."
+	[[ -r "$HOME/.cargo/env" ]] && (
 		source "$HOME/.cargo/env"
-		echo "sourced..."
 	)
 fi
