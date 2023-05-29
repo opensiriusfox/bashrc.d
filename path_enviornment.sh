@@ -67,7 +67,7 @@ __LOAD_DIRS=(
 	/opt/makemkv
 	/opt/icestorm
 	/opt/gemini
-	$HOME/.gem/ruby/2.7.0
+	$HOME/.local/share/gem/ruby/3.0.0
 )
 for DIR_EXPAND in ${__LOAD_DIRS[@]}; do
 	loadDirectory $DIR_EXPAND
@@ -88,4 +88,16 @@ if [ -d "$HOME/.local" ] ; then
 	if [ -d "$HOME/.local/share" ] ; then
 		export XDG_DATA_HOME="$HOME/.local/share"
 	fi
+fi
+
+unset pathStripAdd pathStrip loadDirectory
+
+###########
+# If rust is a thing, load it
+if [[ -d "$HOME/.cargo" ]]; then
+	[[ -x "$HOME/.cargo/env" ]] && (
+		echo "sourcing..."
+		source "$HOME/.cargo/env"
+		echo "sourced..."
+	)
 fi

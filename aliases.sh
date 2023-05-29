@@ -27,22 +27,11 @@ alias fdiff="sdiff -t --tabsize=4 -w \$(tput cols) -b"
 alias rsync-prog="rsync -Pav"
 alias parallel="parallel --no-notice"
 
-export IDF_TOOLS_PATH=/opt/esp
-alias get_idf=". ${IDF_TOOLS_PATH}/esp-idf/export.sh"
-
-if [[ -e /opt/eagle/eagle/eagle ]]; then
-	alias eagle=$(readlink -f /opt/eagle/eagle/eagle)
-fi
-
 # Stopwatch
 alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 
 # IP addresses
 alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
-
-if [[ ! "$(which dropbox)" && "$(which caja-dropbox)" ]]; then
-	alias dropbox=caja-dropbox
-fi
 
 if [[ "$(which ncdu)" ]]; then
 	alias dush="ncdu --color dark -rr"
