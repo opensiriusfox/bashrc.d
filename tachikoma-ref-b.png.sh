@@ -1,1 +1,0 @@
-logos/tachikoma-ref-b.png.sh
