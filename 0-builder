@@ -30,8 +30,9 @@ echo """#!/bin/bash
 
 """ > $COMPILED_SRC
 
-
-HOST_SPECIFIC_META_SRC="$BASHRC_D/hostname/$(hostname).meta.sh"
+__HOSTNAME=$(hostname)
+__HOSTNAME=${__HOSTNAME,,} # make it lowercase
+HOST_SPECIFIC_META_SRC="$BASHRC_D/hostname/${__HOSTNAME}.meta.sh"
 if [[ -e $HOST_SPECIFIC_META_SRC ]]; then
 	echo "Executing host specific config file $HOST_SPECIFIC_META_SRC"
 	source "$HOST_SPECIFIC_META_SRC"
@@ -51,7 +52,7 @@ for F in $(find $BASHRC_D -maxdepth 1 -iname "*.sh"); do
 	echo "" >> $COMPILED_SRC
 done
 
-HOST_SPECIFIC_SRC="$BASHRC_D/hostname/$(hostname).sh"
+HOST_SPECIFIC_SRC="$BASHRC_D/hostname/${__HOSTNAME}.sh"
 if [[ -e $HOST_SPECIFIC_SRC ]]; then
 	echo "Adding host specific file $HOST_SPECIFIC_SRC"
 	echo "##################" >> $COMPILED_SRC

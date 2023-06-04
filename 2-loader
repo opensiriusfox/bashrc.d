@@ -1,0 +1,8 @@
+
+
+
+# These lines are to be appended to the default Ubuntu bashrc script
+# the only line I add to modify this file
+if [[ -e ${HOME}/.bashrc.d/1-compiled ]]; then
+    source ${HOME}/.bashrc.d/1-compiled
+fi

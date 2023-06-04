@@ -66,6 +66,7 @@ __LOAD_DIRS=(
 	/opt/fpga
 	/opt/makemkv
 	/opt/icestorm
+	/opt/openmhz
 	/opt/gemini
 	$HOME/.local/share/gem/ruby/3.0.0
 )
