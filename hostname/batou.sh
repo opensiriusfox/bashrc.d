@@ -1,14 +1,14 @@
 #!/bin/bash
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
+
+
+
 
 COLOR_RST='\[\e[39m\]'
 ULINE='\[\e[4m\]'
 ULINE_RST='\[\e[24m\]'
 
-
-alt_hostname="\h"
+COLOR_NORM='\[\e[1;33m\]' # Batou (Yellow)
+alt_hostname="${ULINE}${COLOR_NORM}Batou${COLOR_RST}${ULINE_RST}"
 
 export PS1="\[\e[01;32m\]\u\[\e[00m\]@\[\e[01;32m\]${alt_hostname}"
 export PS1+="\[\e[01;34m\] \w \\$\[\e[00m\] "
