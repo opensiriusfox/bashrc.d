@@ -3,12 +3,43 @@ export IFS=$'\n'
 
 BASHRC_D="$HOME/.bashrc.d"
 COMPILED_SRC="$BASHRC_D/1-compiled"
+
+################################################################################
+# Setup the default build functions
+export __BUILDER__WORKING_DIR="$BASHRC_D"
+function __builder_prebuild { :; }
+function __builder_postbuild { :; }
+
+__builder_prebuild_exec() {
+	pushd $__BUILDER__WORKING_DIR >/dev/null; printf '\e[34m'; 
+	( __builder_prebuild; )
+	printf '\e[0m'; popd >/dev/null
+}
+
+__builder_postbuild_exec() {
+	pushd $__BUILDER__WORKING_DIR >/dev/null; printf '\e[34m'
+	( __builder_postbuild; )
+	printf '\e[0m'; popd >/dev/null
+}
+
+################################################################################
 echo "Rebuilding $COMPILED_SRC"
 
 echo """#!/bin/bash
 # COMPILED AUTOMAGICALLY AT """$(date -I)"""
 
 """ > $COMPILED_SRC
+
+
+HOST_SPECIFIC_META_SRC="$BASHRC_D/hostname/$(hostname).meta.sh"
+if [[ -e $HOST_SPECIFIC_META_SRC ]]; then
+	echo "Executing host specific config file $HOST_SPECIFIC_META_SRC"
+	source "$HOST_SPECIFIC_META_SRC"
+else
+	echo "No host specific file found at $HOST_SPECIFIC_META_SRC"
+fi
+
+__builder_prebuild_exec
 
 SELF_SRC=$(readlink -f $0)
 for F in $(find $BASHRC_D -maxdepth 1 -iname "*.sh"); do
@@ -32,6 +63,7 @@ else
 	echo "No host specific file found at $HOST_SPECIFIC_SRC"
 fi
 
+
 echo "##################" >> $COMPILED_SRC
 echo "# Reloader Script" >> $COMPILED_SRC
 echo """##################
@@ -40,3 +72,4 @@ function __rebuild_bashrcd() {
 }
 """ >> $COMPILED_SRC
 
+__builder_postbuild_exec
