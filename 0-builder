@@ -69,7 +69,11 @@ echo "##################" >> $COMPILED_SRC
 echo "# Reloader Script" >> $COMPILED_SRC
 echo """##################
 function __rebuild_bashrcd() {
-	bash """$SELF_SRC"""
+	bash \""""$SELF_SRC"""\"
+	if [[ \$? -eq 0 && \"\${1}\" == '-a' ]]; then
+		echo "Automatically loading compiled script."
+		source \""""$(readlink -f "$COMPILED_SRC")"""\"
+	fi
 }
 """ >> $COMPILED_SRC
 
