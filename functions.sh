@@ -114,3 +114,10 @@ function rv() {
 	printf ' RV=%d \e[0m\n' $RV >&2
 }
 
+function hexy() {
+	python3 -c 'import sys
+for v in sys.argv[1:]:
+  print("{:02x}".format(int(v)), end="")
+print("")
+' $*
+}
