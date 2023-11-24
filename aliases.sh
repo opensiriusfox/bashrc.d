@@ -38,3 +38,11 @@ if [[ "$(which ncdu)" ]]; then
 else
 	alias dush="echo please 'apt install ncdu'"
 fi
+
+alias delcrush='zstd -T0 -19 --rm'
+alias crush='zstd -T0 -19'
+
+if [[ -e "/opt/esp32/esp-idf" ]]; then
+	export IDF_TOOLS_PATH=/opt/esp32/expressif
+	alias get_idf='. /opt/esp32/esp-idf/export.sh'
+fi
