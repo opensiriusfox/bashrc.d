@@ -62,12 +62,7 @@ function loadDirectory() {
 ###########
 # Load information that is in any extra random installed directory.
 __LOAD_DIRS=(
-	/opt/poke
-	/opt/fpga
 	/opt/makemkv
-	/opt/icestorm
-	/opt/openmhz
-	/opt/gemini
 	$HOME/.local/share/gem/ruby/3.0.0
 )
 for DIR_EXPAND in ${__LOAD_DIRS[@]}; do
@@ -76,7 +71,11 @@ done
 unset DIR_EXPAND __LOAD_DIRS
 
 # set PATH so it includes user's private bin if it exists
-__LOAD_PATHS=("$HOME/.cargo/bin" "$HOME/bin" "$HOME/.bin" )
+__LOAD_PATHS=(
+	"$HOME/bin"
+	"$HOME/.bin"
+	/opt/oss-cad-suite/bin
+)
 for DIR_EXPAND in ${__LOAD_PATHS[@]}; do
 	pathStripAdd "$DIR_EXPAND" front
 done
