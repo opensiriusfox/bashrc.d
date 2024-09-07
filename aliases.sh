@@ -33,7 +33,7 @@ alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date
 # IP addresses
 alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
 
-if [[ "$(which ncdu)" ]]; then
+if [[ "$(which ncdu 2>/dev/null)" ]]; then
 	alias dush="ncdu --color dark -rr"
 else
 	alias dush="echo please 'apt install ncdu'"
