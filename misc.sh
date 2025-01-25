@@ -14,6 +14,8 @@ export LESS=RF	# colorize less output if we use a pipe
 export HISTSIZE=10000
 export HISTFILESIZE=20000
 
-
+# added to avoid the need for --break-system-packages when using newer versions
+# of PIP.
+export PIP_BREAK_SYSTEM_PACKAGES=1
 
 export HISTIGNORE='pwd:exit:fg:bg:top:clear:history:ls:uptime:df'

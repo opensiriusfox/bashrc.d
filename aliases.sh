@@ -10,7 +10,7 @@ function alias_exists() {
 }
 
 # list of aliases to remove
-__removeAliases=(ll l la)
+__removeAliases=(l)
 
 for __testAlias in ${__removeAliases[@]}; do
 	if alias_exists "$__testAlias"; then
@@ -42,7 +42,16 @@ fi
 alias delcrush='zstd -T0 -19 --rm'
 alias crush='zstd -T0 -19'
 
-if [[ -e "/opt/esp32/esp-idf" ]]; then
-	export IDF_TOOLS_PATH=/opt/esp32/expressif
-	alias get_idf='. /opt/esp32/esp-idf/export.sh'
+# Map python when available.
+if ! which -s python && which -s python3; then
+	alias python=python3
 fi
+
+function _restart_plasma() {
+	(
+		set -ex
+		plasmashell --replace &>/dev/null &
+		set +xe
+		disown
+	)
+}
