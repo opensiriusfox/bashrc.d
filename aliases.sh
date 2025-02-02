@@ -47,7 +47,7 @@ if ! which -s python && which -s python3; then
 	alias python=python3
 fi
 
-function _restart_plasma() {
+function -restart_plasma() {
 	(
 		set -ex
 		plasmashell --replace &>/dev/null &
