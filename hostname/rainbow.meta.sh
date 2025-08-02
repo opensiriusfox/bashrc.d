@@ -7,11 +7,10 @@ __builder_prebuild() {
   for (( I=0; I < ${#NAME}; I++)); do
     printf '\\\[\e[38;5;%dm\\\]%s' $((${RANDOM}%224+8)) "${NAME:$I:1}"
   done
+  printf '\\\[\e[;10m\\\]'
   )"""
   set -x
-  sed 's/___ALT_HOSTNAME___/'${OUTPUT_STRING}'/' data/sd-template.sh > tmp-ps1.sh
-	#ln -s logos/tachikoma-ref-b.png.sh ./logo.sh
-
+  sed 's/___ALT_HOSTNAME___/'${OUTPUT_STRING}'/' data/rainbow-template.sh > tmp-ps1.sh
   
 }
 
