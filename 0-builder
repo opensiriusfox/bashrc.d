@@ -76,9 +76,9 @@ function __rebuild_bashrcd() {
 	fi
 }
 
-function __bashrc_reload() {
-	export BASHRC_RELOAD_COUNTER=$((${BASHRC_RELOAD_COUNTER:-0}+1))
-	if [[ $BASHRC_RELOAD_COUNTER -gt 1 ]]; then echo "reload count: $BASHRC_RELOAD_COUNTER"; fi
+function -reload-bashrc() {
+	export BASHRC_RELOAD_COUNTER=\$((\${BASHRC_RELOAD_COUNTER:-0}+1))
+	if [[ \$BASHRC_RELOAD_COUNTER -gt 1 ]]; then echo "reload count: \$BASHRC_RELOAD_COUNTER"; fi
 	source ~/.bashrc
 }
 alias __bashrc_reload='-reload-bashrc'
